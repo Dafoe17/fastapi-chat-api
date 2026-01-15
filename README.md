@@ -1,4 +1,4 @@
-# FastAPI Chat API
+# FastAPI Test Chat API
 
 **Тестовое задание**: API для работы с чатами и сообщениями.
 
@@ -57,7 +57,6 @@
 - `text: str`
 - `created_at: datetime`
 
-Связь: Chat 1 — N Message.
 ---
 ## 🛠 Методы API
 
@@ -113,5 +112,6 @@ curl http://localhost:8000/ping
 ```bash
 docker-compose exec web pytest -v
 ```
+---
 
 
