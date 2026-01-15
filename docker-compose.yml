@@ -1,0 +1,43 @@
+services:
+  db:
+    image: postgres:alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: chat_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  test_db:
+    image: postgres:alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: test_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - test_db_data:/var/lib/postgresql/data
+
+  web:
+    build: .
+    command: >
+      sh -c "alembic upgrade head &&
+             uvicorn src.main:app --host 0.0.0.0 --port 8000"
+    env_file:
+      - .env    
+    depends_on:
+      - db
+      - test_db
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./src:/app/src
+      - ./src/migrations:/app/src/migrations
+      - ./.env:/app/.env
+
+volumes:
+  db_data:
+  test_db_data:
